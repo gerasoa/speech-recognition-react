@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import './App.css';
+import '../App.css';
+import { Blog } from './Blog';
+import { Contact } from './Contact';
+import { Home } from './Home';
+import { NewBlogPost } from './NewBlogPost';
 
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { createSpeechlySpeechRecognition } from 'speech-recognition-polyfill';
@@ -32,6 +36,7 @@ function App() {
     }
   ];
 
+
   const [text, setText] = useState("");
   const {
     transcript,
@@ -48,13 +53,18 @@ function App() {
     continuous: true
   });
 
+
+  const [redirectUrl, setRedirectUrl] = useState('');
+
+
   function isMicrophoneAvailable() {
     return navigator.mediaDevices.getUserMedia({ audio: true })
       .then(() => true)
       .catch(() => false);
   }
 
-  /*
+  let continuousListeningMessage = 'Continuous listening';
+
   function isBrowserSupportsContinuousListening() {
     if (useSpeechRecognition.browserSupportsContinuousListening) {
       SpeechRecognition.startListening({ continuous: true })
@@ -63,12 +73,14 @@ function App() {
       continuousListeningMessage = 'Continuous listening not suported';
     }
   }
-  */
 
   return (
     <div>     
       <p id='transcript'>transcript: {transcript}</p>
 
+
+{continuousListeningMessage}
+      
       {isMicrophoneAvailable ?
         <p>Microphone Available: yes</p>
         :
@@ -94,7 +106,8 @@ function App() {
         <button onClick={SpeechRecognition.startListening}>Start</button>}
         <br /><br/>
         <button onClick={resetTranscript}>clear</button>
-
+        <br /><br/>
+        <button onClick={isBrowserSupportsContinuousListening()}>Continuous Listening</button>
     </div >
   );
 }
